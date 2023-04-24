@@ -10,7 +10,7 @@ opt$annotationURL  <- "https://utexas.box.com/shared/static/s7p4pq2oytcb0i11o0bn
 opt$annotationFile <- "Phallii_495_v3.1.gene_exons.gff3"
 
 ### Packages needed
-opt$biocPackages <- c("GEOquery")
+opt$biocPackages <- c("GEOquery","Biostrings","ape")
 
 ### Setup directories for storing data
 ## Working directory
@@ -37,7 +37,8 @@ dir.create(opt$localPckDir,recursive = T,showWarnings = F)
 # Say no to pop-ups MOST of the time.
 if(any(!opt$biocPackages%in%installed.packages())){
     if (!"BiocManager"%in%installed.packages()){install.packages("BiocManager")}
-    BiocManager::install(opt$biocPackages)
+    BiocManager::install(update = T,ask = F)
+    BiocManager::install(opt$biocPackages,update = T,ask = F)
 }
 
 
@@ -60,3 +61,9 @@ dldIfNeeded(x = opt$assemblyURL  ,y = opt$assemblyFile  ,overwrite = F)
 dldIfNeeded(x = opt$annotationURL,y = opt$annotationFile,overwrite = F)
 
 
+#### 
+dna <- Biostrings::readDNAStringSet(
+    filepath = file.path(opt$localDataDir,opt$assemblyFile)
+)
+
+read
